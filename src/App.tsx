@@ -217,9 +217,7 @@ export default function App() {
             <br /> Alternatively you can create your own. Click{" "}
             <strong>
               <u>
-                <a href="https://docs.cerebrium.ai/v4/examples/realtime-voice-agents">
-                  here
-                </a>
+                <a href="https://github.com/ai-bot-pro/chat-bot">here</a>
               </u>
             </strong>{" "}
             to see how
