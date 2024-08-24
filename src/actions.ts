@@ -19,5 +19,8 @@ export const fetch_start_agent = async (
     }
     return { error: true, detail: data.result, status: req.status };
   }
+  if (serverUrl.includes("api.cortex.cerebrium.ai")) {
+    return data.result;
+  }
   return data;
 };

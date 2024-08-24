@@ -189,15 +189,20 @@ export const Session = React.memo(
 
         <footer className="w-full flex flex-row mt-auto self-end md:w-auto">
           <div className="flex flex-row justify-between gap-3 w-full md:w-auto">
-          <Tooltip>
+            <Tooltip>
               <TooltipContent>Go to GitHub repository</TooltipContent>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => window.open('https://github.com/CerebriumAI/examples/tree/master/18-realtime-voice-agent', '_blank')}
+                  onClick={() =>
+                    window.open(
+                      "https://github.com/ai-bot-pro/chat-bot.git",
+                      "_blank"
+                    )
+                  }
                 >
-                  <Github /> 
+                  <Github />
                 </Button>
               </TooltipTrigger>
             </Tooltip>

@@ -8,7 +8,10 @@ Some docs regarding how all this fits together: [here](/docs/)
 Install deps and build the UI:
 
 ```
-mv env.example .env.development.local
+# set yarn version stable
+yarn set version stable
+
+cp env.example .env.local
 yarn 
 yarn run build
 yarn dev

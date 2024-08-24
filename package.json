@@ -48,5 +48,6 @@
     "vite": "^5.2.0",
     "vite-plugin-static-copy": "^1.0.5",
     "vite-plugin-webfont-dl": "^3.9.4"
-  }
+  },
+  "packageManager": "yarn@4.4.0"
 }

@@ -35,7 +35,7 @@ const status_text = {
 
 // Server URL (ensure trailing slash)
 let serverUrl = import.meta.env.VITE_SERVER_URL;
-let serverAuth = import.meta.env.VITE_SERVER_AUTH;
+const serverAuth = import.meta.env.VITE_SERVER_AUTH;
 if (serverUrl && !serverUrl.endsWith("/")) serverUrl += "/";
 
 // Auto room creation (requires server URL)
@@ -50,7 +50,7 @@ const checkRoomUrl = (url: string | null): boolean =>
 const showConfigOptions = import.meta.env.VITE_SHOW_CONFIG;
 
 // Mic mode
-const isOpenMic = import.meta.env.VITE_OPEN_MIC ? true : false;
+let isOpenMic = import.meta.env.VITE_OPEN_MIC ? true : false;
 
 export default function App() {
   const daily = useDaily();
@@ -66,7 +66,6 @@ export default function App() {
   );
   const [capacityError, setCapacityError] = useState<string>(""); // New state for start error
 
-
   function handleRoomUrl() {
     if ((autoRoomCreation && serverUrl) || checkRoomUrl(roomUrl)) {
       setRoomError(false);
@@ -79,40 +78,58 @@ export default function App() {
   async function start() {
     if (!daily || (!roomUrl && !autoRoomCreation)) return;
 
-    let data;
+    let res;
 
     // Request agent to start, or join room directly
     if (import.meta.env.VITE_SERVER_URL) {
       // Request a new agent to join the room
       setState("requesting_agent");
 
+      const info = {};
+
       try {
-        data = await fetch_start_agent(`${serverUrl}create_room`, serverAuth);
-        if (data && !data.error) {
-          fetch(`${serverUrl}start_bot`, {
+        res = await fetch_start_agent(
+          `${serverUrl}create_random_room`,
+          serverAuth
+        );
+        if (res && !res.error_code) {
+          let url = `${serverUrl}bot_join/${res.data.room.name}/DailyAsrRTVIBot`;
+          let body = {};
+          if (serverUrl.includes("api.cortex.cerebrium.ai")) {
+            url = `${serverUrl}bot_join_room`;
+            body = {
+              info: info,
+              room_name: res.data.room.name,
+              chat_bot_name: "DailyLangchainRAGBot",
+            };
+          } else {
+            body = info;
+          }
+          fetch(url, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${serverAuth}`
+              Authorization: `Bearer ${serverAuth}`,
             },
-            body: JSON.stringify({
-              room_url: data.result.url,
-              token: data.result.token
-            })
+            body: JSON.stringify(body),
           }).catch((e) => {
             console.error(`Failed to make request to ${serverUrl}/main: ${e}`);
           });
-        } else  {
-          setCapacityError("We are currently at capacity for this demo. Please try again later.")
-          setState("configuring")
-          return
+        } else {
+          setCapacityError(
+            "We are currently at capacity for this demo. Please try again later."
+          );
+          setState("configuring");
+          return;
           // setError(data.detail.message);
           // setState("error");
         }
       } catch (e) {
-        console.log(e)
-        setCapacityError("We are currently at capacity for this demo. Please try again later.")
-        setState("configuring")
+        console.log(e);
+        setCapacityError(
+          "We are currently at capacity for this demo. Please try again later."
+        );
+        setState("configuring");
         // setError(`Unable to connect to the bot server at '${serverUrl}'`);
         // setState("error");
         return;
@@ -124,13 +141,13 @@ export default function App() {
 
     try {
       await daily.join({
-        url: data.result.url || roomUrl,
-        token: data.result.token || "",
+        url: res.data.room.url || roomUrl,
+        token: res.data.token || "",
         videoSource: false,
         startAudioOff: startAudioOff,
       });
     } catch (e) {
-      setError(`Unable to join room: '${data?.room_url || roomUrl}'`);
+      setError(`Unable to join room:`);
       setState("error");
       return;
     }
@@ -153,6 +170,8 @@ export default function App() {
   }
 
   if (state === "connected") {
+    // need to set this to true when bot connected
+    isOpenMic = true;
     return (
       <Session
         onLeave={() => leave()}
@@ -194,7 +213,16 @@ export default function App() {
         </CardFooter>
         {capacityError && (
           <div className="text-red-500 mt-2 p-4">
-            {capacityError}<br/> Alternatively you can create your own. Click <strong><u><a href="https://docs.cerebrium.ai/v4/examples/realtime-voice-agents">here</a></u></strong> to see how
+            {capacityError}
+            <br /> Alternatively you can create your own. Click{" "}
+            <strong>
+              <u>
+                <a href="https://docs.cerebrium.ai/v4/examples/realtime-voice-agents">
+                  here
+                </a>
+              </u>
+            </strong>{" "}
+            to see how
           </div>
         )}
       </Card>
