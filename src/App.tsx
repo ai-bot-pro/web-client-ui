@@ -100,7 +100,7 @@ export default function App() {
             body = {
               info: info,
               room_name: res.data.room.name,
-              chat_bot_name: "DailyLangchainRAGBot",
+              chat_bot_name: "DailyAsrRTVIBot",
             };
           } else {
             body = info;
