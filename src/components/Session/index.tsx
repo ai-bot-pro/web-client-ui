@@ -115,8 +115,8 @@ export const Session = React.memo(
 
     useAppMessage({
       onAppMessage: (e) => {
-        // Aggregate metrics from pipecat
-        if (e.data?.type === "pipecat-metrics") {
+        // Aggregate metrics from achatbot
+        if (e.data?.type === "chatbot-metrics") {
           e.data.metrics.ttfb.map((m: { name: string; time: number }) => {
             stats_aggregator.addStat([m.name, "ttfb", m.time, Date.now()]);
           });

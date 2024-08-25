@@ -37,7 +37,7 @@ export const Stats = React.memo(
     /*
     const sendAppMessage = useAppMessage({
       onAppMessage: useCallback((ev: DailyEventObjectAppMessage) => {
-        // Aggregate metrics from pipecat
+        // Aggregate metrics from achatbot
         if (ev.data?.type === "latency-pong-pipeline-delivery") {
           setPing(Date.now() - ev.data.ts);
         }

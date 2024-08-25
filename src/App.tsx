@@ -52,6 +52,11 @@ const showConfigOptions = import.meta.env.VITE_SHOW_CONFIG;
 // Mic mode
 let isOpenMic = import.meta.env.VITE_OPEN_MIC ? true : false;
 
+// chat bot
+const chatBot = import.meta.env.VITE_CHAT_BOT
+  ? import.meta.env.VITE_CHAT_BOT
+  : "DailyBot";
+
 export default function App() {
   const daily = useDaily();
 
@@ -93,14 +98,14 @@ export default function App() {
           serverAuth
         );
         if (res && !res.error_code) {
-          let url = `${serverUrl}bot_join/${res.data.room.name}/DailyAsrRTVIBot`;
+          let url = `${serverUrl}bot_join/${res.data.room.name}/${chatBot}`;
           let body = {};
           if (serverUrl.includes("api.cortex.cerebrium.ai")) {
             url = `${serverUrl}bot_join_room`;
             body = {
               info: info,
               room_name: res.data.room.name,
-              chat_bot_name: "DailyAsrRTVIBot",
+              chat_bot_name: chatBot,
             };
           } else {
             body = info;
@@ -230,7 +235,7 @@ export default function App() {
   return (
     <Card shadow className="animate-appear max-w-lg">
       <CardHeader>
-        <CardTitle>Pipecat {import.meta.env.VITE_APP_TITLE}</CardTitle>
+        <CardTitle>{import.meta.env.VITE_APP_TITLE}</CardTitle>
         <CardDescription>Check configuration below</CardDescription>
       </CardHeader>
       <CardContent stack>

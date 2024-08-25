@@ -36,6 +36,12 @@ export const SettingsList: React.FC<SettingsList> = ({
           </span>
         </div>
       )}
+      {import.meta.env.VITE_CHAT_BOT && (
+        <div className={rowCx}>
+          <span className={titleCx}>Chat Bot Name</span>
+          <span className={valueCx}>{import.meta.env.VITE_CHAT_BOT}</span>
+        </div>
+      )}
       <div className={rowCx}>
         <span className={titleCx}>Auto room creation</span>
         <span className={valueCx}>

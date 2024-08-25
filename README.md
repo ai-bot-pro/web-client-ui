@@ -1,4 +1,4 @@
-# Pipecat Client Web UI
+# Chatbot Client Web UI
 
 Some docs regarding how all this fits together: [here](/docs/)
 

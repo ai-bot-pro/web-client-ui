@@ -50,13 +50,15 @@ const Splash: React.FC<SplashProps> = ({ handleReady }) => {
             times.
           </p>
           <p className="lg:text-lg text-primary-600">
-            This bot was built using Pipecat, an open source framework for voice
-            and multimodal conversational AI.
+            This bot was built using achatbot, an open source framework for
+            voice and multimodal conversational AI.
           </p>
         </div>
 
         {/* TODO: Uncomment this line to implement yourself */}
-        <Button disabled={true} onClick={handleReady}>Demo No Longer Available</Button>
+        <Button disabled={true} onClick={handleReady}>
+          Demo No Longer Available
+        </Button>
 
         <div className="h-[1px] bg-primary-300 w-full" />
 
